@@ -1,0 +1,103 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct Node
+{
+    int a;
+    struct Node* next;
+}Node;
+Node* SetLinkList(int n);
+void Differenceset(Node *p , Node *q);
+int main()
+{
+    int n1 , n2;
+    Node *p1 , *p2;
+    scanf("%d %d",&n1,&n2);
+    p1 = SetLinkList(n1);
+    p2 = SetLinkList(n2);
+    Differenceset(p1,p2);
+    return 0;
+}
+Node* SetLinkList(int n)
+{
+    Node *h , *p1 , *p2;
+    int b;
+    h = (Node*)malloc(sizeof(Node));
+    scanf("%d",&(h -> a));
+    h -> next = NULL;
+    p1 = h;
+    for(b = 1 ; b < n ; b ++)
+    {
+        p2 = (Node*)malloc(sizeof(Node));
+        scanf("%d",&(p2 -> a));
+        p2 -> next = NULL;
+        p1 -> next = p2;
+        p1 = p1 -> next;
+    }
+    return h;
+}
+void Differenceset(Node *p1 , Node *p2)
+{
+    Node *p3 , *p4 , *p5;
+    p3 = p1;
+    while(p3 != NULL)
+    {
+        printf("%d ",p3 -> a);
+        p3 = p3 -> next;
+    }
+    printf("\n");
+    p3 = p2;
+    while(p3 != NULL)
+    {
+        printf("%d ",p3 -> a);
+        p3 = p3 -> next;
+    }
+    printf("\n");
+    p3 = p1;
+    p4 = p1;
+    //p5 = p2;
+    while(p4 != NULL)
+    {
+        p5 = p2;
+        while(p5 != NULL)
+        {
+            if(p4 == p3 && p4 -> a == p5 -> a)
+            {
+                p4 = p4 -> next;
+                free(p3);
+                p3 = p4;
+                p1 = p3;
+            }
+            else if(p4 -> next != NULL && p4 -> a == p5 -> a)
+            {
+                  p3 -> next = p4 -> next;
+                free(p4);
+                p4 = p3 -> next;
+            }
+            else if(p4 -> next == NULL && p4 -> a == p5 -> a)
+            {
+                free(p4);
+                p3 -> next = NULL;
+                p4 = p3 -> next;
+            }
+            else
+            {
+                p5 = p5 -> next;
+            }
+        }
+        if(p5 == NULL)
+        {
+            if(p4 == p3)
+                p4 = p4 -> next;
+            else
+            {
+                p4 = p4 -> next;
+                p3 = p3 -> next;
+            }
+        }
+    }
+    while(p1 != NULL)
+    {
+        printf("%d ",p1 -> a);
+        p1 = p1 -> next;
+    }
+}
